@@ -1,23 +1,31 @@
 # pytest tests for the style classes
-# run with pytest from the bibparser parent dir
+# run from the bibparser parent dir with
+# python37 -m pytest
+#  --- or ---
+# pythonw -m pytest
+# 
 
+import pytest
 from ..styles import chicago
 from ..cited import Book
 
-def test_generate_book_citation():
+@pytest.fixture
+def book():
     author_last = "author_last"
     author_first = "author_first"
     title = "title"
     published_at = "published_at"
     published_by = "published_by"
     published_year = "published_year"
-    book = Book(author_last, author_first, title, published_at, published_by, published_year)
+    return Book(author_last, author_first, title, published_at, published_by, published_year)
+
+def test_generate_book_citation(book):
     expected_citation = (
-        author_last + ", " + author_first
+        book.author_last + ", " + book.author_first
         + "." + " "
-        + title
+        + book.title
         + "." + " "
-        + published_at + ": " + published_by + ", " + published_year
+        + book.published_at + ": " + book.published_by + ", " + book.published_year
         + "."
         )
     assert expected_citation == chicago.generate_book_citation(book)
