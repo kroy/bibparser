@@ -1,3 +1,5 @@
+import re
+
 from cited import Source, Book, JournalArticle
 
 separator = "."
@@ -6,6 +8,8 @@ def parse(bib_entry: str) -> Source:
     # figure out what type of cited this entry represents
     # return the appropriate object
     # 
+    splitter = re.compile(r'[.](?=[^"\']*\.)(?!.+["])')
+    print(splitter.split(bib_entry))
     return Book("author_last", "author_first", "title", "published_at", "published_by", "published_year")
 
 # take a cited.Book object and turn it into a Chicago/Turabian style citation

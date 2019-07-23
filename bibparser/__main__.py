@@ -1,11 +1,35 @@
+import os
+import sys
+import fileinput
+from typing import List
+
+from cited import Source, Book
 from styles import chicago
-from cited import JournalArticle, Book
 
-def call_me_by_my_name():
-    # parse_func = chicago.parse
-    # print(parse_func("bargive garble snook"))
-    book1 = Book("author_last", "author_first", "title", "published_at", "published_by", "published_year")
-    book2 = chicago.parse("boglle")
-    print(book2 == book1)
+def parse_txt(txt_filename, style):
+    """
+        @TODO turn this into a generic parser that takes an Iterator or something
+            typehints for vars
+    """
+    entries = []
+    with open(txt_filename) as txt_file:
+        for line in txt_file:
+            print("Parsing: ", line.rstrip())
+            entries.append(style.parse(line.rstrip()))
+    return entries
+            
 
-call_me_by_my_name()
+def main():
+    """
+        @TODO add some info about this parser, what you can expect etc
+            - style selection
+    """
+    try:
+        input_dir_or_file = sys.argv[1]
+    except IndexError as e:
+        # @TODO handle errors opening file/filenotfound
+        input_dir_or_file = input("Enter the location of your image or text files: ")
+    sources_cited = parse_txt(input_dir_or_file, chicago)
+    print(sources_cited)
+
+main()
